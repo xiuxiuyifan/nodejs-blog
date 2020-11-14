@@ -10,7 +10,6 @@ const getList = (author,keyword) =>{
     sql += `AND title LIKE '%${keyword}%' `
   }
   sql += `ORDER BY create_time DESC;`
-  console.log(sql)
   return exec(sql)
 }
 
@@ -24,7 +23,6 @@ const getDetail = (id)=>{
 const addBlog = (title,content,author='小明') => {
   let time = new Date().getTime()
   let sql = `INSERT INTO blog (title,content,create_time,author) VALUES ('${title}','${content}','${time}','${author}');`
-  console.log(sql)
   return exec(sql)
 }
 

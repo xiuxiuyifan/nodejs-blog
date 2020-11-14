@@ -9,7 +9,7 @@ const handleBlogRouter = (req,res) => {
 
   //获取博客列表
   if(method === 'GET' && path === '/api/blog/list'){
-    console.log(req.query)
+    console.log(req.session)
     let {keyword,author} = req.query
     return getList(author,keyword).then((dbData)=>{
       return new SuccessVo('请求成功',dbData)
