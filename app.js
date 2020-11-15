@@ -13,12 +13,11 @@ const getPostData = (req) => {
       resolve({})
       return
     }
-    if (req.headers['content-type'] !== 'application/json') {
+    if (req.headers['content-type'].toLowerCase() !== 'application/json; charset=utf-8') {
       resolve({})
       return
     }
     var post = '';
-
     req.on('data', function (chunk) {
       post += chunk;
     });
@@ -118,7 +117,6 @@ const httpHandle = (req, res) => {
       }
       return getPostData(req)
     })
-    .catch((error) => { console.log(error) })
     //解析post数据
     .then((postData) => {
       req.body = postData
@@ -155,6 +153,7 @@ const httpHandle = (req, res) => {
       res.write('404 Not Found\n')
       res.end()
     })
+    .catch((error) => { console.log(error) })
 }
 
 module.exports = httpHandle

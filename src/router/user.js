@@ -28,11 +28,13 @@ const handleUserRouter = (req,res)=>{
 
 
   //登录
-  if(method ==='GET' && path === '/api/user/login'){
+  if(method ==='POST' && path === '/api/user/login'){
     //查询username和password是否一致，
-    let {username,password} = req.query
+    let {username,password} = req.body
+    console.log(username,password)
     //如果一致的话就登陆成功并且设置cookie到浏览器端即可
     return userLogin(username,password).then((dbData)=>{
+      console.log(dbData)
       if(dbData.username){
         req.session.username = dbData.username
         req.session.realname = dbData.realname
@@ -51,7 +53,10 @@ const handleUserRouter = (req,res)=>{
   //测试
   if(method === 'GET' && path === '/api/user/test'){
     let session = req.session
-    return Promise.resolve(new SuccessVo('成功',session))
+    if(!session.username){
+    }else{
+      return Promise.resolve(new SuccessVo('已经登录',true))
+    }
   }
 
 }

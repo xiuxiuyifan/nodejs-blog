@@ -1,6 +1,13 @@
 const { SuccessVo, ErrorVo } = require("../lib/resultVo")
 
 const { getList, getDetail, addBlog, updateBlog,deleteBlog } = require("../dao/blog")
+
+const checkLogin = (req) => {
+  if(!req.session.username){
+    return Promise.resolve(new ErrorVo('尚未登录', false))
+  }
+}
+
 const handleBlogRouter = (req,res) => {
   //获取请求url
   //获取请求方式
@@ -9,7 +16,6 @@ const handleBlogRouter = (req,res) => {
 
   //获取博客列表
   if(method === 'GET' && path === '/api/blog/list'){
-    console.log(req.session)
     let {keyword,author} = req.query
     return getList(author,keyword).then((dbData)=>{
       return new SuccessVo('请求成功',dbData)
@@ -27,8 +33,14 @@ const handleBlogRouter = (req,res) => {
   //新建博客
 
   if(method === 'POST' && path === '/api/blog/add'){
+    //检测是否登录
+    let isLogin = checkLogin(req)
+    if(isLogin){
+      return isLogin
+    }
     let {title,content} = req.body
-    return addBlog(title,content).then((dbData)=>{
+    let author = req.session.username
+    return addBlog(title,content,author).then((dbData)=>{
       if (dbData.affectedRows ===1){
         return new SuccessVo('新增成功',true)
       }else{
@@ -39,6 +51,11 @@ const handleBlogRouter = (req,res) => {
 
   //更新博客
   if(method === 'POST' && path === '/api/blog/update'){
+    //检测是否登录
+    let isLogin = checkLogin(req)
+    if (isLogin) {
+      return isLogin
+    }
     let { id, title, content } = req.body
     return updateBlog(id, title, content).then((dbData)=>{
       if (dbData.affectedRows === 1) {
@@ -51,6 +68,11 @@ const handleBlogRouter = (req,res) => {
   //删除博客
 
   if(method === 'POST' && path === '/api/blog/delete'){
+    //检测是否登录
+    let isLogin = checkLogin(req)
+    if (isLogin) {
+      return isLogin
+    }
     let {id} = req.body
     return deleteBlog(id).then((dbData)=>{
       if (dbData.affectedRows === 1) {

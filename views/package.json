@@ -1,0 +1,17 @@
+{
+  "name": "html",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel ./html/*.html *.js -p 8081",
+    "build": "parcel build ./html/*.html --no-source-maps --no-cache"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/preset-react": "^7.12.5",
+    "jquery": "^3.5.1",
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.29.0"
+  }
+}

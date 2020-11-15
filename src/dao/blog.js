@@ -20,7 +20,7 @@ const getDetail = (id)=>{
 }
 
 //新增博客
-const addBlog = (title,content,author='小明') => {
+const addBlog = (title,content,author) => {
   let time = new Date().getTime()
   let sql = `INSERT INTO blog (title,content,create_time,author) VALUES ('${title}','${content}','${time}','${author}');`
   return exec(sql)
