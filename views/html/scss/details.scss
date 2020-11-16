@@ -1,0 +1,36 @@
+.details-main {
+  margin: 62px auto 10px auto;
+  width: 1000px;
+  box-shadow: 0 1px 3px rgba(18, 18, 18, .1);
+  background: #ffffff;
+  padding: 16px 20px;
+
+  #user {
+    font-size: 15px;
+    line-height: 1.1;
+    color: #444444;
+    margin-right: 10px;
+  }
+
+  #time {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #646464;
+    font-size: 14px;
+    line-height: 1.1;
+  }
+
+  #details-title {
+    margin-top: 12px;
+    margin-bottom: 4px;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 32px;
+    color: #121212;
+  }
+
+  #details-content {
+    word-break: break-word;
+    line-height: 1.6;
+  }
+}

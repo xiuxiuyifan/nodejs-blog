@@ -1,4 +1,6 @@
 node_modules
+views/dist
+views/.cache
 .DS_Store
 dist
 *.local

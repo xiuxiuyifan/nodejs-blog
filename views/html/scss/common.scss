@@ -8,6 +8,10 @@ body {
   color: #121212;
 }
 
+#root {
+  overflow: hidden;
+}
+
 /*
 头部
 */
@@ -130,46 +134,6 @@ body {
           margin: 0 22px;
         }
       }
-
-      .article-ul {
-        .article-li {
-          border-bottom: 1px solid #f0f2f7;
-          padding: 20px;
-          background: #fff;
-
-          &:nth-last-child(1) {
-            border: 0;
-          }
-
-          .article-user {
-            color: #b2bac2;
-            margin-bottom: 10px;
-            .article-username{
-              margin-right: 10px;
-            }
-          }
-
-          .title-article {
-            line-height: 1.6;
-            color: #121212;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-          }
-
-          .title-description {
-            margin-top: 9px;
-            max-height: 100px;
-            line-height: 1.67;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            -webkit-box-orient: vertical;
-            cursor: pointer;
-          }
-        }
-      }
     }
   }
 
@@ -211,6 +175,50 @@ body {
           }
         }
       }
+    }
+  }
+}
+
+/*
+文章列表
+*/
+#article-box {
+  .article-li {
+    border-bottom: 1px solid #f0f2f7;
+    padding: 20px;
+    background: #fff;
+
+    &:nth-last-child(1) {
+      border: 0;
+    }
+
+    .article-user {
+      color: #b2bac2;
+      margin-bottom: 10px;
+
+      .article-username {
+        margin-right: 10px;
+      }
+    }
+
+    .title-article {
+      line-height: 1.6;
+      color: #121212;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .title-description {
+      margin-top: 9px;
+      max-height: 100px;
+      line-height: 1.67;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-box-orient: vertical;
+      cursor: pointer;
     }
   }
 }

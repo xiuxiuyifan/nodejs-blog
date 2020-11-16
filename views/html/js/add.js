@@ -29,7 +29,9 @@ import $ from 'jquery'
             content
           }),
           success: function (data) {
-            console.log(data)
+            if(data.code === 200){
+              location.href = 'index.html'
+            }
           }
         })
       })
