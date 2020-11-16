@@ -11,6 +11,7 @@ const addUser = (username,password,realname) => {
 
 const userLogin = (username,password) => {
   let sql = "SELECT * FROM `user` WHERE username = '"+username+"' AND `password` = "+password+";"
+  console.log(sql)
   return exec(sql).then((row)=>{
     if(row.length>0){
       return row[0]

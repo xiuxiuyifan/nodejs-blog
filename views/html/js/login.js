@@ -11,8 +11,8 @@ class Login {
   loginHanlder(){
     $("#login").on('click',function (e) {
       e.preventDefault()
-      let userName = $('#username').val()
-      let password = $('#password').val()
+      let userName = $('#username').val().trim()
+      let password = $('#password').val().trim()
 
       $.ajax({
         method: 'POST',
@@ -23,7 +23,9 @@ class Login {
           password
         }),
         success: function (data) {
-
+          if(data.code === 200){
+            location.href = 'index.html'
+          }
         }
       })
     })
