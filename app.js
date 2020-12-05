@@ -72,7 +72,7 @@ const httpHandle = (req, res) => {
   //解析cookie并添加到req.cookie中
   req.cookie = parsingCookie(req)
 
-  //解析session 
+  //解析session 内存的形式
   //先判断客户端是否携带cookie过来
   // let userId = req.cookie.userid
   // let needSetCookie = false
@@ -134,11 +134,16 @@ const httpHandle = (req, res) => {
 
       //处理user相关路由,这块返回的promise有可能是一个reject
       const userResult = handleUserRouter(req, res)
+      let reqUrl = req.path
+      console.log(reqUrl)
       if (userResult) {
         userResult.then((userRes) => {
+          console.log('hihihi')
+          console.log(userRes)
           if (userRes) {
-            if (needSetCookie) {
-              res.setHeader("Set-cookie", `userid=${userId}; path=/; httpOnly; expires=${computedExpiresTime()}`)
+            if (needSetCookie && reqUrl === '/api/user/login') {
+              let userName = Buffer.from(userRes.username,'utf-8').toString('base64')
+              res.setHeader("Set-cookie", [`userid=${userId}; path=/; httpOnly; expires=${computedExpiresTime()}`, `username=${userName}; path=/; expires=${computedExpiresTime()}`])
             }
             res.end(JSON.stringify(userRes))
           }

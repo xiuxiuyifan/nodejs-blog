@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "parcel ./html/*.html *.js -p 8081",
+    "dev": "parcel serve ./html/*.html *.js -p 8081",
     "build": "parcel build ./html/*.html --no-source-maps --no-cache"
   },
   "devDependencies": {

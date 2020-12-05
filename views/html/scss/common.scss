@@ -88,6 +88,19 @@ body {
       }
     }
 
+    .username-login {
+      cursor: pointer;
+      height: 52px;
+      line-height: 52px;
+      padding: 0 20px;
+      margin-right: -20px;
+
+      font {
+        display: inline-block;
+        height: 100%;
+      }
+    }
+
     .user-wrapper {
       width: 30px;
       height: 30px;
@@ -220,5 +233,43 @@ body {
       -webkit-box-orient: vertical;
       cursor: pointer;
     }
+  }
+}
+
+
+//退出登录菜单
+.logout-wrapper {
+  position: fixed;
+  z-index: 100;
+  width: 120px;
+  box-shadow: 0 5px 20px rgba(18, 18, 18, .1);
+  background: #fff;
+  border: 1px solid #ebebeb;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #8590a6;
+
+  .popover-arrow {
+    position: absolute;
+    left: 60px;
+    top: 0;
+    width: 32px;
+    height: 16px;
+    transform: translateX(-50%) translateY(-100%);
+    overflow: hidden;
+    &::after{
+      content: '';
+      position: absolute;
+      box-sizing: border-box;
+      width: 24px;
+      height: 24px;
+      border: 1px solid #ebebeb;
+      background: #fff;
+      transform: rotate(45deg);
+      bottom: -19px;
+    }
+  }
+  li{
+    cursor: pointer;
   }
 }

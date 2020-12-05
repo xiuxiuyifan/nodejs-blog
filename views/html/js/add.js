@@ -31,6 +31,9 @@ import $ from 'jquery'
           success: function (data) {
             if(data.code === 200){
               location.href = 'index.html'
+            }else{
+              alert(data.msg)
+              location.href = 'login.html'
             }
           }
         })
