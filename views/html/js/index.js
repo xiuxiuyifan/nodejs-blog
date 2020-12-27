@@ -1,9 +1,12 @@
 import $ from "jquery";
-import { formatDate } from './common'
+import { formatDate, generateLogoutMenu, removeLogoutMenu, setCookie } from './common'
+import * as api from './api'
 
 function searchBlog(data){
   $.ajax({
-    url: '/api/blog/list',
+    url: api.blogList,
+    // crossDomain: true,                 //加这二行支持ajax跨域，允许跨域
+    xhrFields: { withCredentials: true },//加这二行支持ajax跨域，携带凭证   
     data:data,
     success: (data) => {
       let str = ``
@@ -41,5 +44,8 @@ function searchBlog(data){
     let params = val ? { keyword: val } : {}
     searchBlog(params)
   })
+
+  generateLogoutMenu()
+  removeLogoutMenu()
 
 }())

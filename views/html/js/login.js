@@ -1,4 +1,6 @@
 import $ from 'jquery'
+import * as api from './api'
+import { parsingCookie } from './common'
 
 class Login {
   constructor(props){
@@ -6,8 +8,15 @@ class Login {
 
   init(){
     this.loginHanlder()
+    this.checkUserLogined()
+    this.bindingClick()
   }
-
+  checkUserLogined() {
+  let cookieUsername = parsingCookie().username
+  if (cookieUsername) {
+    return location.href = 'index.html'
+  }
+}
   loginHanlder(){
     $("#login").on('click',function (e) {
       e.preventDefault()
@@ -16,7 +25,11 @@ class Login {
 
       $.ajax({
         method: 'POST',
-        url: '/api/user/login',
+        url: api.userLogin,
+        //允许跨域cookie
+        xhrFields: {
+          withCredentials: true
+        },
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({
           username: userName,
@@ -31,7 +44,20 @@ class Login {
     })
   }
 
-
+  bindingClick(){
+    $('.login-tab').each(function(index){
+      $(this).on('click',function(){
+        $('.login-tab').each(function () {
+          $(this).removeClass('active')
+        })
+        $(this).addClass('active')
+        $('.login-form').each(function(){
+          $(this).removeClass('login-form-active')
+        })
+        $($('.login-form')[index]).addClass('login-form-active')
+      })
+    })
+  }
 }
 
 var login = new Login()

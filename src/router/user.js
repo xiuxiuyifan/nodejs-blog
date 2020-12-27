@@ -34,12 +34,11 @@ const handleUserRouter = (req,res)=>{
     console.log(username,password)
     //如果一致的话就登陆成功并且设置cookie到浏览器端即可
     return userLogin(username,password).then((dbData)=>{
-      console.log(dbData)
       if(dbData.username){
         req.session.username = dbData.username
         req.session.realname = dbData.realname
         setRedis(req.sessionId,req.session)
-        return new SuccessVo('登陆成功',true)
+        return Promise.resolve(dbData)
       }
       return new ErrorVo('登陆失败', false)
     })
@@ -57,6 +56,14 @@ const handleUserRouter = (req,res)=>{
     }else{
       return Promise.resolve(new SuccessVo('已经登录',true))
     }
+  }
+
+  if(method === 'POST' && path === '/api/user/logout'){
+    res.setHeader("Set-cookie",
+      [`userid=; path=/; max-age=0}`,
+        `username=; path=/; max-age=0}`
+      ])
+    return Promise.resolve(new SuccessVo('退出成功',true))
   }
 
 }

@@ -1,9 +1,11 @@
 import $ from 'jquery'
-import { formatDate } from './common'
+import { formatDate, generateLogoutMenu } from './common'
+import * as api from './api'
+
 (function () {
   function getDetails(data) {
     $.ajax({
-      url: '/api/blog/detail',
+      url: api.blogDetail,
       data: data,
       success: (data) => {
         let { title, content, author, create_time } = data.data
@@ -17,7 +19,7 @@ import { formatDate } from './common'
 
   function getUserBlogList(data) {
     $.ajax({
-      url: '/api/blog/list',
+      url: api.blogList,
       data: data,
       success: (data) => {
         let str = ``
@@ -55,6 +57,7 @@ import { formatDate } from './common'
 function init() {
   let id = getUrlParams('id')
   let author = getUrlParams('author')
+  generateLogoutMenu()
   if(id){
     getDetails({id:id})
     return

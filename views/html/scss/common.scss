@@ -12,6 +12,11 @@ body {
   overflow: hidden;
 }
 
+.ib {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 /*
 头部
 */
@@ -257,7 +262,8 @@ body {
     height: 16px;
     transform: translateX(-50%) translateY(-100%);
     overflow: hidden;
-    &::after{
+
+    &::after {
       content: '';
       position: absolute;
       box-sizing: border-box;
@@ -269,7 +275,8 @@ body {
       bottom: -19px;
     }
   }
-  li{
+
+  li {
     cursor: pointer;
   }
 }

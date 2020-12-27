@@ -1,8 +1,10 @@
 import $ from 'jquery'
+import { checkUserLogined, generateLogoutMenu } from './common' 
 
 !(function(){
   var add = {
     init:function(){
+      generateLogoutMenu()
       this.inputTitleHanlder()
       this.issueHanlder()
     },
@@ -40,5 +42,6 @@ import $ from 'jquery'
       })
     }
   }
+  checkUserLogined()
   add.init()
 })()

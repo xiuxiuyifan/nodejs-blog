@@ -3,6 +3,8 @@ const { getRedis, setRedis } = require('./src/db/redis')
 
 const handleBlogRouter = require('./src/router/blog')
 const handleUserRouter = require('./src/router/user')
+const { SuccessVo, ErrorVo } = require("./src/lib/resultVo")
+
 
 
 //获取post请求传递过了的数据，目前只考虑application/json的情况
@@ -58,8 +60,18 @@ const computedExpiresTime = () => {
 const SESSION_DATA = {}
 
 const httpHandle = (req, res) => {
-  //设置返回格式
-  res.setHeader('Content-type', 'application/json')
+  res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
+  //
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  //允许的header类型
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  //跨域允许的请求方式
+  res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  //设置响应头信息
+  res.setHeader("Content-Type", "application/json;charset=utf-8");
+  if (req.method === 'OPTIONS') {
+    res.end()
+  }
 
   //获取path 
   const url = req.url
@@ -71,6 +83,7 @@ const httpHandle = (req, res) => {
 
   //解析cookie并添加到req.cookie中
   req.cookie = parsingCookie(req)
+  console.log(req.cookie)
 
   //解析session 内存的形式
   //先判断客户端是否携带cookie过来
@@ -137,13 +150,19 @@ const httpHandle = (req, res) => {
       let reqUrl = req.path
       console.log(reqUrl)
       if (userResult) {
-        userResult.then((userRes) => {
+        userResult.then(async (userRes) => {
           console.log('hihihi')
           console.log(userRes)
           if (userRes) {
             if (needSetCookie && reqUrl === '/api/user/login') {
-              let userName = Buffer.from(userRes.username,'utf-8').toString('base64')
-              res.setHeader("Set-cookie", [`userid=${userId}; path=/; httpOnly; expires=${computedExpiresTime()}`, `username=${userName}; path=/; expires=${computedExpiresTime()}`])
+              let userName = Buffer.from(userRes.username, 'utf-8').toString('base64')
+              res.setHeader("Set-cookie",
+                [`userid=${userId}; path=/; httpOnly; expires=${computedExpiresTime()}`,
+                `username=${userName}; path=/; expires=${computedExpiresTime()}`
+                ])
+              userRes = await new SuccessVo('登陆成功', true)
+            } else {
+              userRes = await new SuccessVo('登陆成功', true)
             }
             res.end(JSON.stringify(userRes))
           }
