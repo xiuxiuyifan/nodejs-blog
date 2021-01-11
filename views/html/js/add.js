@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import { checkUserLogined, generateLogoutMenu } from './common' 
+import * as api from './api'
 
 !(function(){
   var add = {
@@ -24,7 +25,10 @@ import { checkUserLogined, generateLogoutMenu } from './common'
         let content = $("#content").val()
         $.ajax({
           method: 'POST',
-          url: '/api/blog/add',
+          xhrFields: {
+          withCredentials: true
+        },
+          url: api.addBlog,
           contentType: "application/json; charset=utf-8",
           data: JSON.stringify({
             title,

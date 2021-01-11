@@ -61,16 +61,19 @@ const SESSION_DATA = {}
 
 const httpHandle = (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
-  //
+  // //
   res.setHeader("Access-Control-Allow-Credentials", true);
-  //允许的header类型
-  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  //跨域允许的请求方式
-  res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-  //设置响应头信息
+  // //允许的header类型
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  // //跨域允许的请求方式
+  // res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  // //设置响应头信息
   res.setHeader("Content-Type", "application/json;charset=utf-8");
+  
   if (req.method === 'OPTIONS') {
+    res.statusCode = 200;
     res.end()
+    return
   }
 
   //获取path 
@@ -133,6 +136,7 @@ const httpHandle = (req, res) => {
     //解析post数据
     .then((postData) => {
       req.body = postData
+      console.log(req.body)
       //处理blog相关路由
       const blogResult = handleBlogRouter(req, res)
       if (blogResult) {
@@ -148,12 +152,12 @@ const httpHandle = (req, res) => {
       //处理user相关路由,这块返回的promise有可能是一个reject
       const userResult = handleUserRouter(req, res)
       let reqUrl = req.path
+      console.log(req.method)
       console.log(reqUrl)
       if (userResult) {
         userResult.then(async (userRes) => {
-          console.log('hihihi')
           console.log(userRes)
-          if (userRes) {
+          if (userRes.username) {
             if (needSetCookie && reqUrl === '/api/user/login') {
               let userName = Buffer.from(userRes.username, 'utf-8').toString('base64')
               res.setHeader("Set-cookie",
@@ -161,11 +165,10 @@ const httpHandle = (req, res) => {
                 `username=${userName}; path=/; expires=${computedExpiresTime()}`
                 ])
               userRes = await new SuccessVo('登陆成功', true)
-            } else {
-              userRes = await new SuccessVo('登陆成功', true)
-            }
-            res.end(JSON.stringify(userRes))
+            } 
           }
+          console.log(userRes)
+          res.end(JSON.stringify(userRes))
         })
         return
       }

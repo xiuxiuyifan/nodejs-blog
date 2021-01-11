@@ -1,4 +1,4 @@
-const { addUser, userLogin } = require("../dao/user")
+const { addUser, userLogin, checkUsernameUnique } = require("../dao/user")
 const { setRedis } = require("../db/redis")
 const { SuccessVo, ErrorVo } = require("../lib/resultVo")
 
@@ -10,18 +10,25 @@ const computedExpiresTime = ()=>{
   return time.toGMTString()
 }
 
-const handleUserRouter = (req,res)=>{
+const handleUserRouter = async (req,res)=>{
   const method = req.method
   const path = req.path
 
   //新增用户
   if(method === 'POST' && path === '/api/user/add'){
+    console.log('hihihihi')
     let {username,password,realname} = req.body
+    console.log(username,password,realname)
+    let checkResult = await checkUsernameUnique(username)
+    console.log(checkResult)
+    if(checkResult.length>0){
+      return new ErrorVo('该用户名已注册！')
+    }
     return addUser(username, password, realname).then((dbData)=>{
       if (dbData.affectedRows===1){
-        return new SuccessVo('新增用户成功',true)
+        return new SuccessVo('注册成功',true)
       }else{
-        return new ErrorVo('新增用户失败',false)
+        return new ErrorVo('注册失败',false)
       }
     })
   }
@@ -31,14 +38,19 @@ const handleUserRouter = (req,res)=>{
   if(method ==='POST' && path === '/api/user/login'){
     //查询username和password是否一致，
     let {username,password} = req.body
-    console.log(username,password)
+    if (!username) {
+      return new ErrorVo('请填写用户名！', false)
+    }
+    if (!password) {
+      return new ErrorVo('请填写密码！', false)
+    }
     //如果一致的话就登陆成功并且设置cookie到浏览器端即可
     return userLogin(username,password).then((dbData)=>{
       if(dbData.username){
         req.session.username = dbData.username
         req.session.realname = dbData.realname
         setRedis(req.sessionId,req.session)
-        return Promise.resolve(dbData)
+        return dbData
       }
       return new ErrorVo('登陆失败', false)
     })
